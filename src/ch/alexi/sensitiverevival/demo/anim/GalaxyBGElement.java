@@ -38,11 +38,9 @@ public class GalaxyBGElement extends BoardElement {
 			
 		}
 		int posX = boardElement.getWidth() - Math.round(counter);
-		g.drawImage(bgImg, posX, 0, boardElement.getWidth(),
-				boardElement.getHeight(), 0, 0, boardElement.getWidth()
-						- posX, boardElement.getHeight(), boardElement);
+		g.drawImage(bgImg, posX, 0, boardElement.getWidth(), boardElement.getHeight(), 
+				0, 0, boardElement.getWidth() - posX, boardElement.getHeight(), boardElement);
 		g.drawImage(bgImg, 0, 0, posX, boardElement.getHeight(),
-				boardElement.getWidth() - posX, 0, boardElement.getWidth(),
-				boardElement.getHeight(), boardElement);
+				bgImg.getWidth(null)-posX,0,bgImg.getWidth(null),boardElement.getHeight(), boardElement);
 	}
 }
