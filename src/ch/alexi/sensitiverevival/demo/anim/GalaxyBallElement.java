@@ -7,16 +7,15 @@ import javax.swing.JComponent;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.interfaces.BoardElement;
-import ch.alexi.sensitiverevival.logic.GameTimer;
 
 public class GalaxyBallElement extends BoardElement {
 	Color c = Color.yellow;
 	int posX = 0;
 	float realPosX = 0;
-	float ppf = 0;
+	float msPerPixel = 0;
 	int posY = 0;
 	int width = 30;
-	int speed = 5;
+	int speed = 1;
 	boolean first = true;
 	
 	public GalaxyBallElement(JComponent el, Color c,int posY,int speed) {
@@ -27,27 +26,35 @@ public class GalaxyBallElement extends BoardElement {
 	}
 	
 	@Override
-	public void onTimerTick(GameTimerEvent e, Graphics g) {
-		this.drawActFrame(g);
+	public void onTimerTick(GameTimerEvent e) {
+		if (first) {
+			first = false;
+			// How far do I want to travel within a certain amount of time?
+			// how many ms per pixel does that mean?
+			// ms / pixel = time to take / travel width
+			msPerPixel = 15000f / speed / this.boardElement.getWidth();
+		}
 		
-		realPosX = (realPosX + ppf*e.frameDelta) % boardElement.getWidth();
+		// OK, so I have the time per pixel, now how many time has
+		// gone since last tick? How far (how many pixels) do I have to move then?
+		realPosX = (realPosX + new Long(e.timeDelta).floatValue() / msPerPixel) % boardElement.getWidth();
+				
 	}
 	
 	@Override
-	public void drawActFrame(Graphics g) {
+	public void updateGraphics(Graphics g) {
 		if (first) {
 			first = false;
-			// How long to travel the whole width? We want to do it in
-			// 5secs:
-			// 15*fps = nr of frames until goal is reached
-			// width / nr of frames = add pixels per frame
-			ppf = this.pixelPerFrame(15.0f/speed, boardElement.getWidth());
-			
+			// How far do I want to travel within a certain amount of time?
+			// how many ms per pixel does that mean?
+			// ms / pixel = time to take / travel width
+			msPerPixel = 15000f / speed / this.boardElement.getWidth();
 		}
+		
 		g.setColor(c);
 		g.fillRect(Math.round(realPosX), posY, width, width);
 		
 		g.setColor(Color.white);
-		g.drawString("Travels the width in "+(15.0/speed)+" seconds, that means "+ppf+"px/frame by "+GameTimer.FPS+"fps", 20, posY + 50);
+		g.drawString("Travels the width in "+(15.0/speed)+" seconds, that means "+msPerPixel+"ms per pixel", 20, posY + 50);
 	}
 }

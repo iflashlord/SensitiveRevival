@@ -93,30 +93,32 @@ public class GameTimer implements Runnable {
 	@Override
 	public void run() {
 		int sleep = Math.round(1000 / GameTimer.FPS);
-		long start;
+		long lastTime = 0;
+		long time = 0;
+		long timeDelta = 0;
 		long deltaSleep = 0;
 		GameTimerEvent ev = new GameTimerEvent(this, this.frameNr,0);
 		while (this._isRunning) {
-			start = System.currentTimeMillis();
+			time = System.currentTimeMillis();
+			if (lastTime > 0) {
+				timeDelta = time - lastTime;
+			}
 			
-			ev.actFrame = this.frameNr;
-			ev.frameDelta = this.frameNr - this.lastFrameNr;
+			ev.actTime = time;
+			ev.timeDelta = timeDelta;
+			
 			this.informTimerListeners(EventType.TICK, ev);
-			this.lastFrameNr = this.frameNr;
 			
-			deltaSleep = sleep - (System.currentTimeMillis() - start);
+			deltaSleep = sleep - (System.currentTimeMillis() - time);
+			lastTime = time;
 			
 			if (deltaSleep >= 0) {
-				this.frameNr++;
 				try {
 					Thread.sleep(deltaSleep);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			} else {
-				// How much frames do we need to skip? How many times have we overtaken sleep timeframe?
-				int skip = new Long(deltaSleep).intValue() / sleep;
-				this.frameNr = this.frameNr+1+skip;
 				System.err.println("Warning: Game Timer loop took too long to finish: "+deltaSleep);
 			}
 			

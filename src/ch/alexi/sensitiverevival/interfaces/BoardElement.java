@@ -14,11 +14,11 @@ public abstract class BoardElement {
 		this.boardElement = el;
 	}
 	
-	public void onTimerTick(GameTimerEvent e, Graphics g) {
+	public void onTimerTick(GameTimerEvent e) {
 		
 	}
 	
-	public void drawActFrame(Graphics g) {
+	public void updateGraphics(Graphics g) {
 		
 	}
 	

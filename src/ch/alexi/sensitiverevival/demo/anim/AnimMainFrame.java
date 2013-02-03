@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -18,7 +17,6 @@ import javax.swing.JFrame;
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.events.TimerListenerAdapter;
 import ch.alexi.sensitiverevival.interfaces.BoardElement;
-import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
 
 public class AnimMainFrame extends JFrame {
@@ -63,7 +61,7 @@ public class AnimMainFrame extends JFrame {
 				for (int i = 0; i < boardElements.length; i++) {
 					el = boardElements[i];
 					if (el != null) {
-						el.drawActFrame(bufImg.getGraphics());
+						el.updateGraphics(bufImg.getGraphics());
 					}
 				}
 				mainCmp.repaint();
@@ -120,7 +118,8 @@ public class AnimMainFrame extends JFrame {
 						for (int i = 0; i < boardElements.length; i++) {
 							el = boardElements[i];
 							if (el != null) {
-								el.onTimerTick(e, bufImg.getGraphics());
+								el.onTimerTick(e);
+								el.updateGraphics(bufImg.getGraphics());
 							}
 						}
 					}

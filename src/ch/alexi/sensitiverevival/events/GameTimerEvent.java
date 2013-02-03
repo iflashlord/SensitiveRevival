@@ -4,12 +4,13 @@ import ch.alexi.sensitiverevival.logic.GameTimer;
 
 public class GameTimerEvent {
 	public GameTimer gameTimer = null;
-	public int actFrame = 0;
-	public int frameDelta = 0;
 	
-	public GameTimerEvent(GameTimer g, int actFrame, int frameDelta) {
+	public long actTime;
+	public long timeDelta;
+	
+	public GameTimerEvent(GameTimer g, long actTime, long timeDelta) {
 		this.gameTimer = g;
-		this.actFrame = actFrame;
-		this.frameDelta = frameDelta;
+		this.actTime = actTime;
+		this.timeDelta = timeDelta;
 	}
 }
