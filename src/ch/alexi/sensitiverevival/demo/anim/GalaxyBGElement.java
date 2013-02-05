@@ -1,5 +1,6 @@
 package ch.alexi.sensitiverevival.demo.anim;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -8,6 +9,7 @@ import javax.swing.JComponent;
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.interfaces.BoardElement;
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.logic.GameTimer;
 
 public class GalaxyBGElement extends BoardElement {
 	Image bgImg;
@@ -49,5 +51,7 @@ public class GalaxyBGElement extends BoardElement {
 				0, 0, boardElement.getWidth() - posX, boardElement.getHeight(), boardElement);
 		g.drawImage(bgImg, 0, 0, posX, boardElement.getHeight(),
 				bgImg.getWidth(null)-posX,0,bgImg.getWidth(null),boardElement.getHeight(), boardElement);
+		g.setColor(Color.white);
+		g.drawString("Actual Frame rate: "+GameTimer.FPS, 20, this.boardElement.getHeight()-40);
 	}
 }

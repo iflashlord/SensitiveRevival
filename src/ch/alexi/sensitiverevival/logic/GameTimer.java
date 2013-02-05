@@ -6,7 +6,10 @@ import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.interfaces.TimerListener;
 
 public class GameTimer implements Runnable {
-	public final static int FPS = 40; 
+	public static int FPS = 25;
+	public static int minReservedTime = 15;
+	public static int alertTime = 5;
+	
 	private static GameTimer _inst;
 	private Thread _runThread;
 	private boolean _isRunning = false;
@@ -92,13 +95,15 @@ public class GameTimer implements Runnable {
 
 	@Override
 	public void run() {
-		int sleep = Math.round(1000 / GameTimer.FPS);
+		int sleep = 0;
 		long lastTime = 0;
 		long time = 0;
 		long timeDelta = 0;
 		long deltaSleep = 0;
 		GameTimerEvent ev = new GameTimerEvent(this, this.frameNr,0);
 		while (this._isRunning) {
+			sleep = Math.round(1000 / GameTimer.FPS);
+			
 			time = System.currentTimeMillis();
 			if (lastTime > 0) {
 				timeDelta = time - lastTime;
@@ -113,6 +118,12 @@ public class GameTimer implements Runnable {
 			lastTime = time;
 			
 			if (deltaSleep >= 0) {
+				if (deltaSleep > minReservedTime) {
+					GameTimer.FPS++;
+				}
+				if (deltaSleep < alertTime) {
+					GameTimer.FPS--;
+				}
 				try {
 					Thread.sleep(deltaSleep);
 				} catch (InterruptedException e) {
