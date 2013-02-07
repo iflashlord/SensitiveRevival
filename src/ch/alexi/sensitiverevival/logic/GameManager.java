@@ -8,10 +8,24 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import ch.alexi.sensitiverevival.view.Bord;
+
 public class GameManager {
 	private static GameManager _inst;
 	
+	public static int bordWidth = 900;
+	public static int bordHeight = 600;
+	public static int stoneWidth = 30;
+	public static int stoneHeight = 30;
+	public static int stonesX = bordWidth / stoneWidth;
+	public static int stonesY = bordHeight / stoneHeight;
+	
+	
 	private Map<String, Image> images;
+	
+	private boolean paused = false;
+	
+	private Bord bord;
 	
 	private GameManager() {
 		this.images = new HashMap<String, Image>();
@@ -23,6 +37,23 @@ public class GameManager {
 		}
 		return GameManager._inst;
 	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+	
+	public Bord getBord() {
+		if (this.bord == null) {
+			this.bord = new Bord();
+		}
+		return this.bord;
+	}
+
+	
 	
 	public Image getImage(String resKey) {
 		if (this.images.containsKey(resKey)) {

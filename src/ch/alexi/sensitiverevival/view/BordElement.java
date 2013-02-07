@@ -1,26 +1,36 @@
-package ch.alexi.sensitiverevival.interfaces;
+package ch.alexi.sensitiverevival.view;
 
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
+import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
 
-public abstract class BoardElement {
-	protected JComponent boardElement;
+public abstract class BordElement {
+	protected JComponent bordElement;
 	
-	public BoardElement(JComponent el) {
-		this.boardElement = el;
+	public BordElement(JComponent el) {
+		this.bordElement = el;
 	}
 	
 	public void onTimerTick(GameTimerEvent e) {
-		
+		if (!GameManager.getInst().isPaused()) {
+			this.updateElement(e);
+		}
 	}
 	
-	public void updateGraphics(Graphics g) {
-		
-	}
+	/**
+	 *  Must be implemented in child classes: Is called from
+	 *  within onTimerTick whenever the element is not paused
+	 * @param e
+	 */
+	abstract public void updateElement (GameTimerEvent e);
+	
+	abstract public void updateGraphics(Graphics g);
+	
+	
 	
 	/**
 	 * Calcs how many pixels per frame an animation must run

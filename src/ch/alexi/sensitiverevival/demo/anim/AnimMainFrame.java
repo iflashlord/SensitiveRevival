@@ -9,20 +9,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.events.TimerListenerAdapter;
-import ch.alexi.sensitiverevival.interfaces.BoardElement;
 import ch.alexi.sensitiverevival.logic.GameTimer;
+import ch.alexi.sensitiverevival.view.BordElement;
 
 public class AnimMainFrame extends JFrame {
 	JComponent mainCmp;
 	JButton btn;
-	BoardElement[] boardElements;
+	BordElement[] BordElements;
 	
 	GameTimerEvent actTimerEvent;
 	Image bufImg = null;
@@ -56,10 +54,10 @@ public class AnimMainFrame extends JFrame {
 					bufImg = createImage(mainCmp.getWidth(), mainCmp.getHeight());
 				}
 				
-				BoardElement el = null;
+				BordElement el = null;
 				
-				for (int i = 0; i < boardElements.length; i++) {
-					el = boardElements[i];
+				for (int i = 0; i < BordElements.length; i++) {
+					el = BordElements[i];
 					if (el != null) {
 						el.updateGraphics(bufImg.getGraphics());
 					}
@@ -94,15 +92,16 @@ public class AnimMainFrame extends JFrame {
 		this.setTitle("Animation Demo");
 		
 		
-		boardElements = new BoardElement[8];
-		boardElements[0] = new GalaxyBGElement(mainCmp);
-		boardElements[1] = new GalaxyBallElement(mainCmp, Color.yellow,20,1);
-		boardElements[2] = new GalaxyBallElement(mainCmp, Color.red,80,2);
-		boardElements[3] = new GalaxyBallElement(mainCmp, Color.green,140,5);
-		boardElements[4] = new GalaxyBallElement(mainCmp, Color.blue,200,10);
-		boardElements[5] = new GalaxyBallElement(mainCmp, Color.magenta,260,15);
-		boardElements[6] = new GalaxyBallElement(mainCmp, Color.cyan,320,20);
-		boardElements[7] = new GalaxyBallElement(mainCmp, Color.gray,380,40);
+		BordElements = new BordElement[9];
+		BordElements[0] = new GalaxyBGElement(mainCmp);
+		BordElements[1] = new GalaxyBallElement(mainCmp, Color.yellow,20,1);
+		BordElements[2] = new GalaxyBallElement(mainCmp, Color.red,80,2);
+		BordElements[3] = new GalaxyBallElement(mainCmp, Color.green,140,5);
+		BordElements[4] = new GalaxyBallElement(mainCmp, Color.blue,200,10);
+		BordElements[5] = new GalaxyBallElement(mainCmp, Color.magenta,260,15);
+		BordElements[6] = new GalaxyBallElement(mainCmp, Color.cyan,320,20);
+		BordElements[7] = new GalaxyBallElement(mainCmp, Color.gray,380,40);
+		BordElements[8] = new GalaxyBallElement(mainCmp, Color.orange,440,60);
 		
 		
 		GameTimer.getInst().addTimerListener(new TimerListenerAdapter() {
@@ -113,10 +112,10 @@ public class AnimMainFrame extends JFrame {
 				}
 				synchronized (bufImg) {
 					AnimMainFrame.this.actTimerEvent = e;
-					BoardElement el = null;
+					BordElement el = null;
 					if (e != null) {
-						for (int i = 0; i < boardElements.length; i++) {
-							el = boardElements[i];
+						for (int i = 0; i < BordElements.length; i++) {
+							el = BordElements[i];
 							if (el != null) {
 								el.onTimerTick(e);
 								el.updateGraphics(bufImg.getGraphics());

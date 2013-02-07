@@ -1,4 +1,4 @@
-package ch.alexi.sensitiverevival.demo.anim;
+package ch.alexi.sensitiverevival.view;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,13 +9,13 @@ import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.view.BordElement;
 
-public class GalaxyBGElement extends BordElement {
+public class BG1GalaxyElement extends BordElement {
 	Image bgImg;
 	float realPosX = 0;
 	boolean first = true;
 	float msPerPixel = 0;
 
-	public GalaxyBGElement(JComponent el) {
+	public BG1GalaxyElement(JComponent el) {
 		super(el);
 
 		bgImg = GameManager.getInst().getImage("/res/galaxy1.jpg");
@@ -37,13 +37,6 @@ public class GalaxyBGElement extends BordElement {
 	
 	@Override
 	public void updateGraphics(Graphics g) {
-		if (first) {
-			first = false;
-			// How far do I want to travel within a certain amount of time?
-			// how many ms per pixel does that mean?
-			// ms / pixel = time to take / travel width
-			msPerPixel = 15000f / 300; // 15 seconds for 300 pixels
-		}
 		int posX = bordElement.getWidth() - Math.round(realPosX);
 		g.drawImage(bgImg, posX, 0, bordElement.getWidth(), bordElement.getHeight(), 
 				0, 0, bordElement.getWidth() - posX, bordElement.getHeight(), bordElement);
