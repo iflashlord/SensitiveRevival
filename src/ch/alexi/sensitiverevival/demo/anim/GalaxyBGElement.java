@@ -3,10 +3,9 @@ package ch.alexi.sensitiverevival.demo.anim;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import javax.swing.JComponent;
-
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.view.Bord;
 import ch.alexi.sensitiverevival.view.BordElement;
 
 public class GalaxyBGElement extends BordElement {
@@ -15,7 +14,7 @@ public class GalaxyBGElement extends BordElement {
 	boolean first = true;
 	float msPerPixel = 0;
 
-	public GalaxyBGElement(JComponent el) {
+	public GalaxyBGElement(Bord el) {
 		super(el);
 
 		bgImg = GameManager.getInst().getImage("/res/galaxy1.jpg");

@@ -3,9 +3,8 @@ package ch.alexi.sensitiverevival.demo.anim;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.JComponent;
-
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
+import ch.alexi.sensitiverevival.view.Bord;
 import ch.alexi.sensitiverevival.view.BordElement;
 
 public class GalaxyBallElement extends BordElement {
@@ -18,7 +17,7 @@ public class GalaxyBallElement extends BordElement {
 	int speed = 1;
 	boolean first = true;
 	
-	public GalaxyBallElement(JComponent el, Color c,int posY,int speed) {
+	public GalaxyBallElement(Bord el, Color c,int posY,int speed) {
 		super(el);
 		this.c = c;
 		this.posY = posY;

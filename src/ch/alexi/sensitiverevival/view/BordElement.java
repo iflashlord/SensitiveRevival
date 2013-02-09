@@ -2,16 +2,14 @@ package ch.alexi.sensitiverevival.view;
 
 import java.awt.Graphics;
 
-import javax.swing.JComponent;
-
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
 
 public abstract class BordElement {
-	protected JComponent bordElement;
+	protected Bord bordElement;
 	
-	public BordElement(JComponent el) {
+	public BordElement(Bord el) {
 		this.bordElement = el;
 	}
 	
@@ -46,5 +44,14 @@ public abstract class BordElement {
 		// duration * fps = nr of frames until goal is reached
 		// width / nr of frames = add pixels per frame
 		return width / (duration * GameTimer.FPS);
+	}
+	
+	
+	/**
+	 * to be called whenever the element is removed from the bord, to clean
+	 * up references and stuff
+	 */
+	public void dispose() {
+		this.bordElement = null;
 	}
 }

@@ -1,6 +1,8 @@
 package ch.alexi.sensitiverevival.logic;
 
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,7 +12,7 @@ import javax.imageio.ImageIO;
 
 import ch.alexi.sensitiverevival.view.Bord;
 
-public class GameManager {
+public class GameManager implements KeyListener {
 	private static GameManager _inst;
 	
 	public static int bordWidth = 900;
@@ -19,6 +21,7 @@ public class GameManager {
 	public static int stoneHeight = 30;
 	public static int stonesX = bordWidth / stoneWidth;
 	public static int stonesY = bordHeight / stoneHeight;
+	public static int playerSpeed = 250; // time in ms to travel 1 stone width
 	
 	
 	private Map<String, Image> images;
@@ -26,6 +29,11 @@ public class GameManager {
 	private boolean paused = false;
 	
 	private Bord bord;
+	
+	private int actKeyCode = 0;
+	public int getActKeyCode() {
+		return this.actKeyCode;
+	}
 	
 	private GameManager() {
 		this.images = new HashMap<String, Image>();
@@ -73,6 +81,25 @@ public class GameManager {
 			this.images.put(resKey, im);
 			return im;
 		}
+		
+	}
+	
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		this.actKeyCode = e.getKeyCode();
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		this.actKeyCode = 0;
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 	

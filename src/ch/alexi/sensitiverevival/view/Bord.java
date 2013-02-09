@@ -1,23 +1,20 @@
 package ch.alexi.sensitiverevival.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JComponent;
 
-import ch.alexi.sensitiverevival.demo.anim.AnimMainFrame;
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
-import ch.alexi.sensitiverevival.events.TimerListenerAdapter;
 import ch.alexi.sensitiverevival.interfaces.TimerListener;
 import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
 import ch.alexi.sensitiverevival.logic.Level;
 import ch.alexi.sensitiverevival.test.StoneTestLevel;
 
-public class Bord extends JComponent implements TimerListener{
-	private GameTimerEvent _lastGameTimerEvent;
+@SuppressWarnings("serial")
+public class Bord extends JComponent implements TimerListener {
 	private Image bufImg = null;
 	
 	
@@ -30,7 +27,10 @@ public class Bord extends JComponent implements TimerListener{
 		
 		this.actLevel = new StoneTestLevel(this);
 		GameTimer.getInst().addTimerListener(this);
-		
+	}
+	
+	public Level getActLevel() {
+		return this.actLevel;
 	}
 	
 	@Override
@@ -58,7 +58,6 @@ public class Bord extends JComponent implements TimerListener{
 
 	@Override
 	public void onTimerTick(GameTimerEvent event) {
-		Bord.this._lastGameTimerEvent = event;
 		if (bufImg == null) {
 			bufImg = this.createImage(this.getWidth(), this.getHeight());
 		}
@@ -87,5 +86,4 @@ public class Bord extends JComponent implements TimerListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
 }

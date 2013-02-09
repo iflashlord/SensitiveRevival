@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
-import javax.swing.JComponent;
-
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
 
@@ -14,11 +12,16 @@ public class DoubleStoneElement extends StoneElement {
 	private Image stoneImg2 = GameManager.getInst().getImage("/res/stones/double_stone1_2.png");
 	private Image actStone;
 	private Point pixelPos;
+	private long animCounter = 0;
 	
-	private long msCounter = 0;
+	private enum State {
+		INITIAL, PLAYER_ENTERED, PLAYER_LEAVED, PLAYER_ENTERED_2nd_TIME, REMOVED
+	}
+	private State actState = State.INITIAL;
+	private int timeToRemove = GameManager.playerSpeed * 2 + 100;
 	
 	
-	public DoubleStoneElement(JComponent el, int bordPosX, int bordPosY) {
+	public DoubleStoneElement(Bord el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);
 		this.pixelPos = this.bordCoordsToPixel();
 		this.actStone = this.stoneImg1;
@@ -27,21 +30,70 @@ public class DoubleStoneElement extends StoneElement {
 
 	@Override
 	public void updateElement(GameTimerEvent e) {
-		msCounter += e.timeDelta;
-		if (msCounter > 200) {
-			msCounter = msCounter - 200;
-			if (actStone == stoneImg1) {
-				actStone = stoneImg2;
-			} else {
-				actStone = stoneImg1;
+		this.calcNextAnimationStep(e);
+		
+		switch (this.actState) {
+		case INITIAL:
+			if (this.bordElement.getActLevel().getPlayer().bordPosX == this.bordPosX &&
+					this.bordElement.getActLevel().getPlayer().bordPosY == this.bordPosY) {
+				this.actState = State.PLAYER_ENTERED;
 			}
+			break;
+		case PLAYER_ENTERED:
+			this.timeToRemove -= e.timeDelta;
+			if (this.timeToRemove < 0) {
+				this.actState = State.PLAYER_LEAVED;
+				this.timeToRemove = GameManager.playerSpeed * 2 + 100;
+			}
+			break;
+		case PLAYER_LEAVED:
+			if (this.bordElement.getActLevel().getPlayer().bordPosX == this.bordPosX &&
+					this.bordElement.getActLevel().getPlayer().bordPosY == this.bordPosY) {
+				this.actState = State.PLAYER_ENTERED_2nd_TIME;
+			}
+			break;
+		case PLAYER_ENTERED_2nd_TIME:
+			this.timeToRemove -= e.timeDelta;
+			if (this.timeToRemove < 0) {
+				this.actState = State.REMOVED;
+				this.removeFromBord();
+			}
+			break;
+		}
+	}
+	
+	private void removeFromBord() {
+		this.bordElement.getActLevel().removeStone(this);
+	}
+	
+	private void calcNextAnimationStep(GameTimerEvent e) {
+		if (this.actState == State.INITIAL) {
+			animCounter += e.timeDelta;
+			if (animCounter > 200) {
+				animCounter = animCounter - 200;
+				if (actStone == stoneImg1) {
+					actStone = stoneImg2;
+				} else {
+					actStone = stoneImg1;
+				}
+			}
+		} else {
+			actStone = stoneImg1;
 		}
 	}
 
 	@Override
 	public void updateGraphics(Graphics g) {
-		g.drawImage(this.actStone, this.pixelPos.x, this.pixelPos.y, this.bordElement);
-
+		if  (this.actState != State.REMOVED) {
+			g.drawImage(this.actStone, this.pixelPos.x, this.pixelPos.y, this.bordElement);
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		this.stoneImg1 = null;
+		this.stoneImg2 = null;
 	}
 
 }

@@ -9,16 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
+
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.events.TimerListenerAdapter;
 import ch.alexi.sensitiverevival.logic.GameTimer;
+import ch.alexi.sensitiverevival.view.Bord;
 import ch.alexi.sensitiverevival.view.BordElement;
 
+@SuppressWarnings("serial")
 public class AnimMainFrame extends JFrame {
-	JComponent mainCmp;
+	Bord mainCmp;
 	JButton btn;
 	BordElement[] BordElements;
 	
@@ -26,7 +29,7 @@ public class AnimMainFrame extends JFrame {
 	Image bufImg = null;
 	
 	public AnimMainFrame() {
-		mainCmp = new JComponent() {
+		mainCmp = new Bord() {
 			{
 				this.setMinimumSize(new Dimension(800, 600));
 				this.setPreferredSize(new Dimension(800, 600));
@@ -128,5 +131,4 @@ public class AnimMainFrame extends JFrame {
 			}
 		});
 	}
-	
 }

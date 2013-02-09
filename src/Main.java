@@ -1,10 +1,6 @@
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JFrame;
-
-import ch.alexi.sensitiverevival.demo.anim.AnimMainFrame;
-import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
 import ch.alexi.sensitiverevival.view.MainFrame;
 
