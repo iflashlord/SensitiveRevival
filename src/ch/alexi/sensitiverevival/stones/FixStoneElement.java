@@ -1,4 +1,4 @@
-package ch.alexi.sensitiverevival.view;
+package ch.alexi.sensitiverevival.stones;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,13 +6,14 @@ import java.awt.Point;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.view.GameBoard;
 
 public class FixStoneElement extends StoneElement {
 	private Image stoneImg = GameManager.getInst().getImage("/res/stones/fix_stone1.png");
 	private Point pixelPos;
 	
 	
-	public FixStoneElement(Bord el, int bordPosX, int bordPosY) {
+	public FixStoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);
 		this.pixelPos = this.bordCoordsToPixel();
 		
@@ -25,7 +26,7 @@ public class FixStoneElement extends StoneElement {
 
 	@Override
 	public void updateGraphics(Graphics g) {
-		g.drawImage(this.stoneImg, this.pixelPos.x, this.pixelPos.y, this.bordElement);
+		g.drawImage(this.stoneImg, this.pixelPos.x, this.pixelPos.y, this.board);
 
 	}
 	

@@ -2,14 +2,14 @@ package ch.alexi.sensitiverevival.test;
 
 import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.Level;
-import ch.alexi.sensitiverevival.view.Bord;
-import ch.alexi.sensitiverevival.view.DoubleStoneElement;
-import ch.alexi.sensitiverevival.view.FixStoneElement;
-import ch.alexi.sensitiverevival.view.NormalStoneElement;
+import ch.alexi.sensitiverevival.stones.DoubleStoneElement;
+import ch.alexi.sensitiverevival.stones.FixStoneElement;
+import ch.alexi.sensitiverevival.stones.NormalStoneElement;
+import ch.alexi.sensitiverevival.view.GameBoard;
 
 public class StoneTestLevel extends Level {
 
-	public StoneTestLevel(Bord bordComp) {
+	public StoneTestLevel(GameBoard bordComp) {
 		super(bordComp);
 		
 		// Fill in stones:

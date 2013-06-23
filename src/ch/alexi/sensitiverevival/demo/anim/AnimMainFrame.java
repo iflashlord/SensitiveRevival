@@ -16,20 +16,20 @@ import javax.swing.JFrame;
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.events.TimerListenerAdapter;
 import ch.alexi.sensitiverevival.logic.GameTimer;
-import ch.alexi.sensitiverevival.view.Bord;
-import ch.alexi.sensitiverevival.view.BordElement;
+import ch.alexi.sensitiverevival.view.GameBoard;
+import ch.alexi.sensitiverevival.view.BoardElement;
 
 @SuppressWarnings("serial")
 public class AnimMainFrame extends JFrame {
-	Bord mainCmp;
+	GameBoard mainCmp;
 	JButton btn;
-	BordElement[] BordElements;
+	BoardElement[] BordElements;
 	
 	GameTimerEvent actTimerEvent;
 	Image bufImg = null;
 	
 	public AnimMainFrame() {
-		mainCmp = new Bord() {
+		mainCmp = new GameBoard() {
 			{
 				this.setMinimumSize(new Dimension(800, 600));
 				this.setPreferredSize(new Dimension(800, 600));
@@ -57,7 +57,7 @@ public class AnimMainFrame extends JFrame {
 					bufImg = createImage(mainCmp.getWidth(), mainCmp.getHeight());
 				}
 				
-				BordElement el = null;
+				BoardElement el = null;
 				
 				for (int i = 0; i < BordElements.length; i++) {
 					el = BordElements[i];
@@ -95,7 +95,7 @@ public class AnimMainFrame extends JFrame {
 		this.setTitle("Animation Demo");
 		
 		
-		BordElements = new BordElement[9];
+		BordElements = new BoardElement[9];
 		BordElements[0] = new GalaxyBGElement(mainCmp);
 		BordElements[1] = new GalaxyBallElement(mainCmp, Color.yellow,20,1);
 		BordElements[2] = new GalaxyBallElement(mainCmp, Color.red,80,2);
@@ -115,7 +115,7 @@ public class AnimMainFrame extends JFrame {
 				}
 				synchronized (bufImg) {
 					AnimMainFrame.this.actTimerEvent = e;
-					BordElement el = null;
+					BoardElement el = null;
 					if (e != null) {
 						for (int i = 0; i < BordElements.length; i++) {
 							el = BordElements[i];

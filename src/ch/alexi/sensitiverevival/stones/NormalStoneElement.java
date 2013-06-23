@@ -1,4 +1,4 @@
-package ch.alexi.sensitiverevival.view;
+package ch.alexi.sensitiverevival.stones;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,6 +6,7 @@ import java.awt.Point;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.view.GameBoard;
 
 public class NormalStoneElement extends StoneElement {
 	private Image stoneImg = GameManager.getInst().getImage("/res/stones/normal_stone1.png");
@@ -17,7 +18,7 @@ public class NormalStoneElement extends StoneElement {
 	private int timeToRemove = GameManager.playerSpeed * 2 + 100;
 	
 	
-	public NormalStoneElement(Bord el, int bordPosX, int bordPosY) {
+	public NormalStoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);
 		this.pixelPos = this.bordCoordsToPixel();
 		
@@ -27,8 +28,8 @@ public class NormalStoneElement extends StoneElement {
 	public void updateElement(GameTimerEvent e) {
 		switch (this.actState) {
 		case INITIAL:
-			if (this.bordElement.getActLevel().getPlayer().bordPosX == this.bordPosX &&
-					this.bordElement.getActLevel().getPlayer().bordPosY == this.bordPosY) {
+			if (this.board.getActLevel().getPlayer().bordPosX == this.bordPosX &&
+					this.board.getActLevel().getPlayer().bordPosY == this.bordPosY) {
 				this.actState = State.PLAYER_ENTERED;
 			}
 			break;
@@ -43,13 +44,13 @@ public class NormalStoneElement extends StoneElement {
 	}
 	
 	private void removeFromBord() {
-		this.bordElement.getActLevel().removeStone(this);
+		this.board.getActLevel().removeStone(this);
 	}
 	
 	@Override
 	public void updateGraphics(Graphics g) {
 		if (this.actState != State.REMOVED) {
-			g.drawImage(this.stoneImg, this.pixelPos.x, this.pixelPos.y, this.bordElement);
+			g.drawImage(this.stoneImg, this.pixelPos.x, this.pixelPos.y, this.board);
 		}
 	}
 	

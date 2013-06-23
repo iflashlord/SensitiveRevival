@@ -6,11 +6,11 @@ import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
 
-public abstract class BordElement {
-	protected Bord bordElement;
+public abstract class BoardElement {
+	protected GameBoard board;
 	
-	public BordElement(Bord el) {
-		this.bordElement = el;
+	public BoardElement(GameBoard el) {
+		this.board = el;
 	}
 	
 	public void onTimerTick(GameTimerEvent e) {
@@ -52,6 +52,6 @@ public abstract class BordElement {
 	 * up references and stuff
 	 */
 	public void dispose() {
-		this.bordElement = null;
+		this.board = null;
 	}
 }

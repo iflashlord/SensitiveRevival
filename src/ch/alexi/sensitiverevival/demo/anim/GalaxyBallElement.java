@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
-import ch.alexi.sensitiverevival.view.Bord;
-import ch.alexi.sensitiverevival.view.BordElement;
+import ch.alexi.sensitiverevival.view.GameBoard;
+import ch.alexi.sensitiverevival.view.BoardElement;
 
-public class GalaxyBallElement extends BordElement {
+public class GalaxyBallElement extends BoardElement {
 	Color c = Color.yellow;
 	int posX = 0;
 	float realPosX = 0;
@@ -17,7 +17,7 @@ public class GalaxyBallElement extends BordElement {
 	int speed = 1;
 	boolean first = true;
 	
-	public GalaxyBallElement(Bord el, Color c,int posY,int speed) {
+	public GalaxyBallElement(GameBoard el, Color c,int posY,int speed) {
 		super(el);
 		this.c = c;
 		this.posY = posY;
@@ -31,12 +31,12 @@ public class GalaxyBallElement extends BordElement {
 			// How far do I want to travel within a certain amount of time?
 			// how many ms per pixel does that mean?
 			// ms / pixel = time to take / travel width
-			msPerPixel = 15000f / speed / this.bordElement.getWidth();
+			msPerPixel = 15000f / speed / this.board.getWidth();
 		}
 		
 		// OK, so I have the time per pixel, now how many time has
 		// gone since last tick? How far (how many pixels) do I have to move then?
-		realPosX = (realPosX + new Long(e.timeDelta).floatValue() / msPerPixel) % bordElement.getWidth();
+		realPosX = (realPosX + new Long(e.timeDelta).floatValue() / msPerPixel) % board.getWidth();
 				
 	}
 	
@@ -47,7 +47,7 @@ public class GalaxyBallElement extends BordElement {
 			// How far do I want to travel within a certain amount of time?
 			// how many ms per pixel does that mean?
 			// ms / pixel = time to take / travel width
-			msPerPixel = 15000f / speed / this.bordElement.getWidth();
+			msPerPixel = 15000f / speed / this.board.getWidth();
 		}
 		
 		g.setColor(c);

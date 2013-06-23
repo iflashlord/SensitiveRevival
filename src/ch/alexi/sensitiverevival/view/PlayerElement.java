@@ -9,6 +9,7 @@ import javax.vecmath.Point2f;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.stones.StoneElement;
 
 public class PlayerElement extends StoneElement {
 	private Image stoneImg = GameManager.getInst().getImage("/res/stones/player.png");
@@ -22,7 +23,7 @@ public class PlayerElement extends StoneElement {
 	}
 	
 	
-	public PlayerElement(Bord el, int bordPosX, int bordPosY) {
+	public PlayerElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);
 		this.pixelPos = this.bordCoordsToPixel();
 		this.realPixelPos = new Point2f(this.pixelPos.x, this.pixelPos.y);
@@ -33,6 +34,9 @@ public class PlayerElement extends StoneElement {
 
 	@Override
 	public void updateElement(GameTimerEvent e) {
+		if (this.board.getActState() != GameBoard.STATE.RUNNING) return;
+		
+		
 		// Select appropriate state:
 		switch (this.actState) {
 		case STOP:
@@ -88,7 +92,7 @@ public class PlayerElement extends StoneElement {
 
 	@Override
 	public void updateGraphics(Graphics g) {
-		g.drawImage(this.stoneImg, this.pixelPos.x, this.pixelPos.y, this.bordElement);
+		g.drawImage(this.stoneImg, this.pixelPos.x, this.pixelPos.y, this.board);
 
 	}
 	

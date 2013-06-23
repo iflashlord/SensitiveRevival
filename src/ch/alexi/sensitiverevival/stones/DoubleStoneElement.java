@@ -1,4 +1,4 @@
-package ch.alexi.sensitiverevival.view;
+package ch.alexi.sensitiverevival.stones;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,6 +6,7 @@ import java.awt.Point;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.view.GameBoard;
 
 public class DoubleStoneElement extends StoneElement {
 	private Image stoneImg1 = GameManager.getInst().getImage("/res/stones/double_stone1_1.png");
@@ -21,7 +22,7 @@ public class DoubleStoneElement extends StoneElement {
 	private int timeToRemove = GameManager.playerSpeed * 2 + 100;
 	
 	
-	public DoubleStoneElement(Bord el, int bordPosX, int bordPosY) {
+	public DoubleStoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);
 		this.pixelPos = this.bordCoordsToPixel();
 		this.actStone = this.stoneImg1;
@@ -34,8 +35,8 @@ public class DoubleStoneElement extends StoneElement {
 		
 		switch (this.actState) {
 		case INITIAL:
-			if (this.bordElement.getActLevel().getPlayer().bordPosX == this.bordPosX &&
-					this.bordElement.getActLevel().getPlayer().bordPosY == this.bordPosY) {
+			if (this.board.getActLevel().getPlayer().bordPosX == this.bordPosX &&
+					this.board.getActLevel().getPlayer().bordPosY == this.bordPosY) {
 				this.actState = State.PLAYER_ENTERED;
 			}
 			break;
@@ -47,8 +48,8 @@ public class DoubleStoneElement extends StoneElement {
 			}
 			break;
 		case PLAYER_LEAVED:
-			if (this.bordElement.getActLevel().getPlayer().bordPosX == this.bordPosX &&
-					this.bordElement.getActLevel().getPlayer().bordPosY == this.bordPosY) {
+			if (this.board.getActLevel().getPlayer().bordPosX == this.bordPosX &&
+					this.board.getActLevel().getPlayer().bordPosY == this.bordPosY) {
 				this.actState = State.PLAYER_ENTERED_2nd_TIME;
 			}
 			break;
@@ -63,7 +64,7 @@ public class DoubleStoneElement extends StoneElement {
 	}
 	
 	private void removeFromBord() {
-		this.bordElement.getActLevel().removeStone(this);
+		this.board.getActLevel().removeStone(this);
 	}
 	
 	private void calcNextAnimationStep(GameTimerEvent e) {
@@ -85,7 +86,7 @@ public class DoubleStoneElement extends StoneElement {
 	@Override
 	public void updateGraphics(Graphics g) {
 		if  (this.actState != State.REMOVED) {
-			g.drawImage(this.actStone, this.pixelPos.x, this.pixelPos.y, this.bordElement);
+			g.drawImage(this.actStone, this.pixelPos.x, this.pixelPos.y, this.board);
 		}
 	}
 	

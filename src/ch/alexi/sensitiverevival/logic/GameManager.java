@@ -10,25 +10,42 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import ch.alexi.sensitiverevival.view.Bord;
+import ch.alexi.sensitiverevival.view.Board;
+import ch.alexi.sensitiverevival.view.GameBoard;
+import ch.alexi.sensitiverevival.view.BoardFrame;
+import ch.alexi.sensitiverevival.view.MainMenuBoard;
 
 public class GameManager implements KeyListener {
 	private static GameManager _inst;
+	private LevelManager lm;
 	
-	public static int bordWidth = 900;
-	public static int bordHeight = 600;
+	public static int boardWidth = 900;
+	public static int boardHeight = 600;
 	public static int stoneWidth = 30;
 	public static int stoneHeight = 30;
-	public static int stonesX = bordWidth / stoneWidth;
-	public static int stonesY = bordHeight / stoneHeight;
+	public static int stonesX = boardWidth / stoneWidth;
+	public static int stonesY = boardHeight / stoneHeight;
 	public static int playerSpeed = 250; // time in ms to travel 1 stone width
 	
+	public enum GAME_STATE {
+		STATE_MAIN_MENU,
+		STATE_PREPARE_LEVEL,
+		STATE_GAME_RUNNING,
+		STATE_GAME_PAUSED,
+		STATE_END_SEQUENCE
+	};
 	
+	private GAME_STATE actState = GAME_STATE.STATE_MAIN_MENU;
+	private GAME_STATE prevState = null; // used for pause / unpause game
+	
+	public GAME_STATE getActState() {
+		return actState;
+	}
+
 	private Map<String, Image> images;
 	
-	private boolean paused = false;
-	
-	private Bord bord;
+	//private Board board;
+	private BoardFrame boardFrame;
 	
 	private int actKeyCode = 0;
 	public int getActKeyCode() {
@@ -37,6 +54,7 @@ public class GameManager implements KeyListener {
 	
 	private GameManager() {
 		this.images = new HashMap<String, Image>();
+		this.lm = new LevelManager();
 	}
 	
 	public static GameManager getInst() {
@@ -47,20 +65,34 @@ public class GameManager implements KeyListener {
 	}
 	
 	public boolean isPaused() {
-		return paused;
+		return this.actState == GAME_STATE.STATE_GAME_PAUSED;
 	}
 
 	public void setPaused(boolean paused) {
-		this.paused = paused;
-	}
-	
-	public Bord getBord() {
-		if (this.bord == null) {
-			this.bord = new Bord();
+		if (paused) {
+			// enter pause state:
+			if (this.actState != GAME_STATE.STATE_GAME_PAUSED) {
+				this.prevState = this.actState;
+				this.actState = GAME_STATE.STATE_GAME_PAUSED;
+			}
+		} else {
+			// exit pause state, restore previous state:
+			this.actState = this.prevState;
 		}
-		return this.bord;
 	}
-
+	/*
+	public Board getActBord() {
+		return this.board;
+	}
+	*/
+	
+	public BoardFrame getBoardFrame() {
+		if (this.boardFrame == null) {
+			this.boardFrame = new BoardFrame();
+			//this.boardFrame.setBoard(this.getActBord());
+		}
+		return this.boardFrame;
+	}
 	
 	
 	public Image getImage(String resKey) {
@@ -88,19 +120,52 @@ public class GameManager implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		this.actKeyCode = e.getKeyCode();
-		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		this.actKeyCode = 0;
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 	
+	/**
+	 * Starts the game, means, returns to the start state (main menu):
+	 * - sets the initial state
+	 * - starts the game timer
+	 * - set up the board frame with the initial (main menu) board
+	 */
+	public void start() {
+		this.setPaused(false);
+		this.actState = GAME_STATE.STATE_MAIN_MENU;
+		this.getBoardFrame().setBoard(new MainMenuBoard());
+		this.getBoardFrame().pack();
+		this.getBoardFrame().setVisible(true);
+		GameTimer.getInst().start();
+	}
+	
+	
+	public void startNextLevel() {
+		this.setPaused(true);
+		this.actState = GAME_STATE.STATE_PREPARE_LEVEL;
+		
+		//TODO: Load level somehow
+		GameBoard board = new GameBoard();
+		Level nextLevel = this.lm.loadNextLevel(board);
+		if (nextLevel != null) {
+			this.getBoardFrame().setBoard(board);
+			this.actState = GAME_STATE.STATE_GAME_RUNNING;
+			this.setPaused(false);
+		} else {
+			this.endSequence();
+		}
+	}
+	
+	public void endSequence() {
+		this.setPaused(false);
+		this.actState = GAME_STATE.STATE_END_SEQUENCE;
+	}
 }

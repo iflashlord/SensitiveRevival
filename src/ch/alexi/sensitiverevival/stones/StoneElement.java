@@ -1,13 +1,15 @@
-package ch.alexi.sensitiverevival.view;
+package ch.alexi.sensitiverevival.stones;
 
 import java.awt.Point;
 
 import ch.alexi.sensitiverevival.logic.GameManager;
+import ch.alexi.sensitiverevival.view.BoardElement;
+import ch.alexi.sensitiverevival.view.GameBoard;
 
-public abstract class StoneElement extends BordElement {
+public abstract class StoneElement extends BoardElement {
 	protected int bordPosX, bordPosY;
 
-	public StoneElement(Bord el, int bordPosX, int bordPosY) {
+	public StoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el);
 		this.bordPosX = bordPosX;
 		this.bordPosY = bordPosY;

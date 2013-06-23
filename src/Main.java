@@ -1,8 +1,9 @@
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import ch.alexi.sensitiverevival.logic.GameManager;
 import ch.alexi.sensitiverevival.logic.GameTimer;
-import ch.alexi.sensitiverevival.view.MainFrame;
+import ch.alexi.sensitiverevival.view.BoardFrame;
 
 
 public class Main {
@@ -14,14 +15,13 @@ public class Main {
 		*/
 		
 		
-		MainFrame mf = new MainFrame();
-		mf.addComponentListener(new ComponentAdapter() {
+		//BoardFrame mf = GameManager.getInst().getBoardFrame();
+		/*mf.addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent evt) {
 				GameTimer.getInst().start();
 		    }
-		});
-		mf.pack();
-		mf.setVisible(true);
+		});*/
+		GameManager.getInst().start();
 	}
 	
 	public static void main(String[] args) {

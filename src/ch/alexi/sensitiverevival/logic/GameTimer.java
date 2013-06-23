@@ -7,6 +7,7 @@ import ch.alexi.sensitiverevival.interfaces.TimerListener;
 
 public class GameTimer implements Runnable {
 	public static int FPS = 25;
+	public static int MAX_FPS = 60;
 	public static int minReservedTime = 15;
 	public static int alertTime = 5;
 	
@@ -73,6 +74,10 @@ public class GameTimer implements Runnable {
 		}
 	}
 	
+	public void removeTimerListener(TimerListener t) {
+		this._listeners.remove(t);
+	}
+	
 	private void informTimerListeners(EventType t, GameTimerEvent e) {
 		switch (t) {
 		case START:
@@ -119,7 +124,7 @@ public class GameTimer implements Runnable {
 			
 			if (deltaSleep >= 0) {
 				if (deltaSleep > minReservedTime) {
-					GameTimer.FPS++;
+					GameTimer.FPS = Math.min(GameTimer.FPS+1, GameTimer.MAX_FPS);
 				}
 				if (deltaSleep < alertTime) {
 					GameTimer.FPS--;
