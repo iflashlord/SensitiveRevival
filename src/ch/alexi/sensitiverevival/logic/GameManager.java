@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import com.sun.codemodel.internal.JOp;
 
 import ch.alexi.sensitiverevival.view.Board;
 import ch.alexi.sensitiverevival.view.GameBoard;
@@ -139,6 +144,7 @@ public class GameManager implements KeyListener {
 	 * - set up the board frame with the initial (main menu) board
 	 */
 	public void start() {
+		this.lm.reset();
 		this.setPaused(false);
 		this.actState = GAME_STATE.STATE_MAIN_MENU;
 		this.getBoardFrame().setBoard(new MainMenuBoard());
@@ -151,8 +157,9 @@ public class GameManager implements KeyListener {
 	public void startNextLevel() {
 		this.setPaused(true);
 		this.actState = GAME_STATE.STATE_PREPARE_LEVEL;
+		this.actKeyCode = 0;
 		
-		//TODO: Load level somehow
+		//Load level:
 		GameBoard board = new GameBoard();
 		Level nextLevel = this.lm.loadNextLevel(board);
 		if (nextLevel != null) {
@@ -164,8 +171,42 @@ public class GameManager implements KeyListener {
 		}
 	}
 	
+	public void replayActualLevel() {
+		this.setPaused(true);
+		this.actState = GAME_STATE.STATE_PREPARE_LEVEL;
+		this.actKeyCode = 0;
+		
+		//Load level:
+		GameBoard board = new GameBoard();
+		Level actLevel = this.lm.loadLevel(board);
+		if (actLevel != null) {
+			this.getBoardFrame().setBoard(board);
+			this.actState = GAME_STATE.STATE_GAME_RUNNING;
+			this.setPaused(false);
+		}
+	}
+	
 	public void endSequence() {
+		System.out.println("End Sequence follows here");
 		this.setPaused(false);
 		this.actState = GAME_STATE.STATE_END_SEQUENCE;
+		this.start();
+	}
+	
+	/**
+	 * Called from the Board when the player is death. Asks for repeat level
+	 * or go back to main menu.
+	 */
+	public void playerDeath() {
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				int answ = JOptionPane.showConfirmDialog(GameManager.this.getBoardFrame(), "You're death. Sorry. This was the abyss. Try again?", "Death due to abyss", JOptionPane.YES_NO_OPTION);
+				if (answ == JOptionPane.YES_OPTION) {
+					GameManager.this.replayActualLevel();
+				}
+			}
+		};
+		SwingUtilities.invokeLater(r);
 	}
 }

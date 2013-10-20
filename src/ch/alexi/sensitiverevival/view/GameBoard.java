@@ -19,7 +19,7 @@ public class GameBoard extends Board implements TimerListener {
 	private long startTimeout = 0; // Duration of the start sequence (state START > RUNNING)
 	
 	public enum STATE {
-		START, RUNNING, DEATH, DONE
+		START, RUNNING, DEATH_INVOKED, DEATH, DONE, DISPOSED
 	};
 	
 	public GameBoard() {
@@ -68,6 +68,9 @@ public class GameBoard extends Board implements TimerListener {
 
 	@Override
 	public void onTimerTick(GameTimerEvent event) {
+		if (this.actState == STATE.DISPOSED) return;
+		if (this.actLevel == null) return;
+		
 		if (bufImg == null) {
 			bufImg = this.createImage(GameManager.boardWidth,GameManager.boardHeight);
 		}
@@ -92,8 +95,20 @@ public class GameBoard extends Board implements TimerListener {
 			}
 			break;
 		case RUNNING:
-			//TODO: collision detection, respectively check if player is death / on end stone.
+			// collision detection, respectively check if player is death / on end stone.
+			if (this.getActLevel().isPlayerOverAbyss()) {
+				this.actState = STATE.DEATH_INVOKED;
+			}
 			
+			if (this.getActLevel().isPlayerOnTargetAndEverythingIsClean()) {
+				this.actState = STATE.DONE;
+				GameManager.getInst().startNextLevel();
+			}
+			
+			break;
+		case DEATH_INVOKED:
+			this.actState = STATE.DEATH;
+			GameManager.getInst().playerDeath();
 			break;
 		case DEATH: break;
 		case DONE: break;
@@ -107,6 +122,7 @@ public class GameBoard extends Board implements TimerListener {
 	}
 
 	public void dispose() {
+		this.actState = STATE.DISPOSED;
 		GameTimer.getInst().removeTimerListener(this);
 		if (this.actLevel != null) this.actLevel.dispose();
 		this.actLevel = null;

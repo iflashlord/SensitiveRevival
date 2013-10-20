@@ -17,6 +17,8 @@ public class NormalStoneElement extends StoneElement {
 	private State actState = State.INITIAL;
 	private int timeToRemove = GameManager.playerSpeed * 2 + 100;
 	
+	protected boolean removable = true;
+	
 	
 	public NormalStoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);

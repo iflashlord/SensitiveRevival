@@ -7,13 +7,13 @@ import java.awt.Graphics;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 
-public class StartTextElement extends BoardElement {
+public class DeathTextElement extends BoardElement {
 	Font textFont;
 	FontMetrics metrics;
 	Color color;
 	int textHeight;
 
-	public StartTextElement(GameBoard el) {
+	public DeathTextElement(GameBoard el) {
 		super(el);
 		textFont = new Font("Arial", Font.BOLD,48);
 		metrics = this.board.getFontMetrics(textFont);
@@ -28,7 +28,7 @@ public class StartTextElement extends BoardElement {
 
 	@Override
 	public void updateGraphics(Graphics g) {
-		String text = "Level "+this.board.getActLevel().getLevelNr()+": "+this.board.getActLevel().getLevelTitle();
+		String text = "ABYSS!!!";
 		if (this.board.getActState() == GameBoard.STATE.START) {
 			g.setColor(new Color(0, 0, 0, 150));
 			g.fillRect(0, 0, board.getWidth(), board.getHeight());

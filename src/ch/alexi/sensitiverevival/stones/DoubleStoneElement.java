@@ -21,6 +21,8 @@ public class DoubleStoneElement extends StoneElement {
 	private State actState = State.INITIAL;
 	private int timeToRemove = GameManager.playerSpeed * 2 + 100;
 	
+	protected boolean removable = true;
+	
 	
 	public DoubleStoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el, bordPosX, bordPosY);

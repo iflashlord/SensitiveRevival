@@ -8,11 +8,16 @@ import ch.alexi.sensitiverevival.view.GameBoard;
 
 public abstract class StoneElement extends BoardElement {
 	protected int bordPosX, bordPosY;
+	protected boolean removable = false;
 
 	public StoneElement(GameBoard el, int bordPosX, int bordPosY) {
 		super(el);
 		this.bordPosX = bordPosX;
 		this.bordPosY = bordPosY;
+	}
+	
+	public boolean isRemovable() {
+		return this.removable;
 	}
 	
 	public int getBordPosX() {

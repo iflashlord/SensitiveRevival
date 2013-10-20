@@ -13,6 +13,11 @@ public class LevelManager {
 	private int actLevelNr = 0;
 	private Level actLevel = null;
 	
+	public void reset() {
+		this.actLevelNr = 0;
+		this.actLevel = null;
+	}
+	
 	/**
 	 * Loads the next level definition, creates a Level
 	 * object and returns it.
@@ -26,6 +31,30 @@ public class LevelManager {
 	 */
 	public Level loadNextLevel(GameBoard board) {
 		this.actLevelNr++;
+		return this.loadLevel(board, this.actLevelNr);
+	}
+	
+	/**
+	 * Re-loads the actual level, if any
+	 * @param board
+	 * @return
+	 */
+	public Level loadLevel(GameBoard board) {
+		return this.loadLevel(board, this.actLevelNr);
+	}
+	
+	/**
+	 * Loads the actual level definition, creates a Level
+	 * object and returns it.
+	 * 
+	 * A Level is stored in a JSON file (level-nnnnn.json),
+	 * beginning with level-00001.json. It contains all the
+	 * necessary definitions like the board stones, level name,
+	 * passkey etc.
+	 * 
+	 * @return The next level, or null if there is no next level.
+	 */
+	public Level loadLevel(GameBoard board, int levelNr) {
 		Level l = this.getLevelObjectFromJsonObject(this.getLevelJson(), board);
 		if (l != null) {
 			this.actLevel = l;

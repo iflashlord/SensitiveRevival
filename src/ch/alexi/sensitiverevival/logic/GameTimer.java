@@ -1,6 +1,7 @@
 package ch.alexi.sensitiverevival.logic;
 
 import java.util.Vector;
+import java.util.concurrent.locks.ReentrantLock;
 
 import ch.alexi.sensitiverevival.events.GameTimerEvent;
 import ch.alexi.sensitiverevival.interfaces.TimerListener;
@@ -86,9 +87,14 @@ public class GameTimer implements Runnable {
 			}
 			break;
 		case TICK:
+			for (int i = 0; i < this._listeners.size();i++) {
+				this._listeners.get(i).onTimerTick(e);
+			}
+			/*
 			for (TimerListener tl : this._listeners) {
 				tl.onTimerTick(e);
 			}
+			*/
 			break;
 		case PAUSE:
 			for (TimerListener tl : this._listeners) {

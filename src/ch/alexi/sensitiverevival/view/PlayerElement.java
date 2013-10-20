@@ -34,12 +34,10 @@ public class PlayerElement extends StoneElement {
 
 	@Override
 	public void updateElement(GameTimerEvent e) {
-		if (this.board.getActState() != GameBoard.STATE.RUNNING) return;
-		
-		
 		// Select appropriate state:
 		switch (this.actState) {
 		case STOP:
+			if (this.board.getActState() != GameBoard.STATE.RUNNING) return;
 			switch (GameManager.getInst().getActKeyCode()) {
 			case KeyEvent.VK_UP: this.actState = State.MOVE_UP; this.bordPosY--;break;
 			case KeyEvent.VK_RIGHT: this.actState = State.MOVE_RIGHT; this.bordPosX++;break;

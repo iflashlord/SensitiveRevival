@@ -238,4 +238,51 @@ public class Level implements TimerListener {
 		
 		this.bordComponent = null;
 	}
+	
+	
+	/**
+	 * Checks if the player element is actual "over an abyss", means, is the
+	 * player element either driving over background or a dying stone?
+	 * 
+	 * @return True if player is over abyss, false if not
+	 */
+	public boolean isPlayerOverAbyss() {
+		if (this.playerElement != null) {
+			int playerX = this.playerElement.getBordPosX();
+			int playerY = this.playerElement.getBordPosY();
+			
+			// No stone under the player: abyss!
+			if (this.stoneElements[playerX][playerY] == null) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if the player sits on the end stone and all
+	 * removable stones are gone
+	 * @return
+	 */
+	public boolean isPlayerOnTargetAndEverythingIsClean() {
+		if (this.playerElement != null) {
+			int playerX = this.playerElement.getBordPosX();
+			int playerY = this.playerElement.getBordPosY();
+			
+			// Player sits on target element:
+			if (this.stoneElements[playerX][playerY] instanceof TargetStoneElement) {
+				// All removable stones are gone:
+				boolean allGone = true;
+				for (int x = 0; x < this.stoneElements.length; x++) {
+					for (int y = 0; y < this.stoneElements[x].length;y++) {
+						BoardElement el = this.stoneElements[x][y];
+						if (el != null && el instanceof StoneElement) {
+							StoneElement s = (StoneElement)el;
+							if (s.isRemovable()) allGone = false; // some stones are not removed!
+						}
+					}
+				}
+				return allGone;
+			}
+		}
+		return false;
+	}
 }
