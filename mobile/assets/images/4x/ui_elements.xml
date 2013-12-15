@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:d2b76228ae0b6f72f9386e518e2d2c47:fe07bad9b39b84e657830cf8ebad0657:9ca0a4bda699bb271d6a65263886762d$ -->
+<TextureAtlas imagePath="ui_elements.png">
+    <SubTexture name="play_btn" x="1" y="131" width="128" height="128"/>
+    <SubTexture name="play_btn_down" x="1" y="1" width="128" height="128"/>
+</TextureAtlas>

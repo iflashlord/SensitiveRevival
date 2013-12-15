@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:fbc6fb1e48b7bfb1c9f2b399622ad1b1:86421a42ef2eabc87a551754c8d3a46d:84af4209219f8dd45012a682a1f5e099$ -->
+<TextureAtlas imagePath="stones.png">
+    <SubTexture name="fix_stone_1x1" x="1" y="165" width="80" height="80"/>
+    <SubTexture name="hero" x="1" y="83" width="80" height="80"/>
+    <SubTexture name="single_stone" x="1" y="1" width="80" height="80"/>
+</TextureAtlas>
