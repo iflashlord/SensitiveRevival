@@ -17,6 +17,7 @@ import citrus.objects.CitrusSprite;
 
 import org.osflash.signals.Signal;
 
+import sprites.stones.DoubleStone;
 import sprites.stones.FixStone1x1;
 import sprites.stones.Hero;
 import sprites.stones.SingleStone;
@@ -45,14 +46,20 @@ import utils.MobileAssetManager;
 		protected var timeDisplay: TimeDisplay;
 		protected var pointsDisplay: PointsDisplay;
 		*/
-		private var lastTimeUpdate:Number = 0;
+		private var lastStoneUpdate:Number = 0;
 		
 		//private var pausePopUp:PausePopUp;
 		private var touchInputController:InputController;
 		
 		protected var _hero:Hero;
-		protected var _stones:Vector.<CitrusObject>;
 		
+		/**
+		 * An array containing references to all stones, on their correct
+		 * grid position (indexes x,y).
+		 */
+		protected var _stones:Array;
+		
+		protected var _actStone:Stone = null;
 		
 		public function ALevel(level:MovieClip = null) {
 			super();
@@ -65,7 +72,7 @@ import utils.MobileAssetManager;
 		private function objectsUsedInLevel():void
 		{
 			//var objectsUsed:Array = [Hero, Ground, Swamp, Platform, EnemySmall, EnemyNormal, EnemyBig, EnemyFlying, EnemyJumping, GoodApple, FallingApple, BigApple, BadApple, Sensor, CitrusSprite, Box, MovingPlatform, OrangeSprite];
-			var objectsUsed:Array = [CitrusSprite,Stone,FixStone1x1,SingleStone,Hero];
+			var objectsUsed:Array = [CitrusSprite,Stone,FixStone1x1,SingleStone,Hero,DoubleStone];
 		}
 		
 		private function initSignals():void
@@ -79,8 +86,7 @@ import utils.MobileAssetManager;
 			super.initialize();
 			stage.color = Color.BLACK;
 			Starling.current.nativeStage.color = Color.BLACK;			
-			createPhysics();
-			
+
 			buildLevel();
 			
 			//(_ce as SensitiveRevival).showMobileControls();
@@ -98,24 +104,24 @@ import utils.MobileAssetManager;
 			
 			trace(stage.stageWidth,stage.stageHeight )
 			
-			_hero = getObjectByName("hero") as Hero;
-			_hero.stepDone.add(heroStepDone);
 			
-			_stones = getObjectsByType(Stone);
-		}
-		
-		private function createPhysics():void
-		{
-			/*
-			physics = new Nape("Nape");
-			physics.visible = Constants.PHYSICS;
-			add(physics);
-			*/
 		}
 		
 		private function buildLevel():void
 		{
 			EnhancedObjectMakerStarling.FromMovieClip(_level, assetsManager, true);
+			_hero = getObjectByName("hero") as Hero;
+			_hero.stepDone.add(heroStepDone);
+			
+			var levelStones:Vector.<CitrusObject> = getObjectsByType(Stone); 
+			_stones = new Array(Constants.STONES_X);
+			for (var loopX:int = 0; loopX < Constants.STONES_X; loopX++) {
+				_stones[loopX] = new Array(Constants.STONES_Y);
+			}
+			for each (var stone:Stone in levelStones) {
+				stone.destroyed.add(stoneDestroyed);
+				_stones[stone.xToGrid()][stone.yToGrid()] = stone;
+			}
 		}
 		
 		private function addBackground():void
@@ -243,15 +249,16 @@ import utils.MobileAssetManager;
 		
 		override public function update(timeDelta:Number):void{
 			super.update(timeDelta);
-			//physics.space.step(timeDelta, 8, 8);
-			lastTimeUpdate += timeDelta;
-			/*
-			if (lastTimeUpdate > 0.1) {
-				updateTextComponents(lastTimeUpdate);
-				lastTimeUpdate = 0;
-			}
-			*/
+			lastStoneUpdate += timeDelta;
+			var stone:Stone = _stones[Stone.pixelToGrid(_hero.x)][Stone.pixelToGrid(_hero.y)];
 			
+				if (stone != _actStone) {
+					if (_actStone) _actStone.heroLeft(_hero);
+					if (stone) stone.heroEntered(_hero);
+					_actStone = stone;
+				} else if (_actStone != null) {
+					_actStone.heroStayed(_hero);
+				}
 		}
 		
 		
@@ -313,13 +320,23 @@ import utils.MobileAssetManager;
 		}
 		
 		protected function checkSolidGround(x:Number,y:Number):Boolean {
-			trace(_stones);
-			for each (var stone:Stone in _stones) {
-				if (stone.containsPoint(x,y)) {
-					return true;
-				}
-			}
+			var stone:Stone = _stones[Stone.pixelToGrid(x)][Stone.pixelToGrid(y)];
+			if (stone) return true;
 			return false;
+		}
+		
+		protected function stoneDestroyed(stone:Stone):void {
+			trace("Stone destroyed: ",stone);
+			remove(stone);
+			if (stone.containsPoint(_hero.x,_hero.y)) {
+				heroDies();
+			}
+			_stones[Stone.pixelToGrid(stone.x)][Stone.pixelToGrid(stone.y)] = null;
+		}
+		
+		protected function heroDies():void {
+			trace("Uh oh, die!");
+			remove(_hero);
 		}
 	}
 }

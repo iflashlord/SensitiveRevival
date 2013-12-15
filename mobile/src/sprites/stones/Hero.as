@@ -26,6 +26,9 @@ package sprites.stones
 			updateCallEnabled = true;
 			velocity = [0,0];
 			stepDone = new Signal();
+			
+			view.pivotX = width >> 1;
+			view.pivotY = height >> 1;
 		}
 		
 		override public function initialize(poolObjectParams:Object=null):void {
