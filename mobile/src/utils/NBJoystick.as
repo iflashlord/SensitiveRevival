@@ -81,7 +81,7 @@ package utils
 				this.triggerOFF('right');
 				this.triggerOFF('left');
 				this.triggerOFF('jump');
-				this.triggerOFF('duck');
+				this.triggerOFF('down');
 			}
 		}
 		
@@ -91,34 +91,34 @@ package utils
 			{
 				this.triggerOFF('right');					
 				this.triggerOFF('jump');
-				this.triggerOFF('duck');
+				this.triggerOFF('down');
 				this.triggerON('left');
 			}
 			else if ( x > this.radius/4 )
 			{
 				this.triggerOFF('left');
 				this.triggerOFF('jump');
-				this.triggerOFF('duck');
+				this.triggerOFF('down');
 				this.triggerON('right');
 			} else if ( y < -this.radius/4 )
 			{
 				this.triggerOFF('right');					
 				this.triggerON('jump');
-				this.triggerOFF('duck');
+				this.triggerOFF('down');
 				this.triggerOFF('left');
 			}
 			else if ( y > this.radius/4 )
 			{
 				this.triggerOFF('left');
 				this.triggerOFF('jump');
-				this.triggerON('duck');
+				this.triggerON('down');
 				this.triggerOFF('right');
 			}
 			else
 			{
 				this.triggerOFF('right');
 				this.triggerOFF('jump');
-				this.triggerOFF('duck');
+				this.triggerOFF('down');
 				this.triggerOFF('left');
 			}
 		}
